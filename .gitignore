@@ -1,0 +1,42 @@
+# Python cache
+
+**pycache**/
+*.py[cod]
+*$py.class
+
+# Virtual environment
+
+myvenv/
+venv/
+env/
+.venv/
+
+# Uploaded evidence / generated files
+
+uploads/
+recovered/
+reports/
+
+# Environment variables and secrets
+
+.env
+.env.*
+
+# IDE settings
+
+.vscode/
+.idea/
+
+# Operating system files
+
+.DS_Store
+Thumbs.db
+
+# Python tools
+
+.pytest_cache/
+.mypy_cache/
+
+# Logs
+
+*.log
