@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+{% block title_suffix %} — Dashboard{% endblock %}
+{% block content %}
+<div class="active-page-marker" data-page="dashboard"></div>
+
+<div class="topbar">
+  <div>
+    <h1 class="page-title">Investigation Dashboard</h1>
+    <div class="page-sub">Case {{ case.get('case_id', 'N/A') }} — {{ case.get('case_name', 'N/A') }}</div>
+  </div>
+  <span class="badge">● {{ case.get('incident_type', 'N/A') }}</span>
+</div>
+
+{% if error_message %}
+<div class="flash error">{{ error_message }}</div>
+{% endif %}
+
+<div class="grid grid-4">
+  <div class="card stat-card">
+    <div class="stat-value">{{ findings.total_evidence_items }}</div>
+    <div class="stat-label">Total Evidence Items</div>
+  </div>
+  <div class="card stat-card">
+    <div class="stat-value">{{ findings.deleted_files_detected }}</div>
+    <div class="stat-label">Deleted Files Detected</div>
+  </div>
+  <div class="card stat-card">
+    <div class="stat-value">{{ findings.files_recovered }}</div>
+    <div class="stat-label">Files Recovered</div>
+  </div>
+  <div class="card stat-card">
+    <div class="stat-value">{{ findings.integrity_rate }}</div>
+    <div class="stat-label">Integrity Verification</div>
+  </div>
+</div>
+
+<div class="card" style="margin-top:18px;">
+  <div class="section-title"><span class="accent-bar"></span>Case Summary</div>
+  <div class="grid grid-2">
+    <div>
+      <label>Organization</label>
+      <div class="mono" style="margin-bottom:14px;">{{ case.get('organization', 'N/A') }}</div>
+      <label>Investigator</label>
+      <div class="mono" style="margin-bottom:14px;">{{ case.get('investigator', 'N/A') }}</div>
+      <label>Evidence ID</label>
+      <div class="mono">{{ case.get('evidence_id', 'N/A') }}</div>
+    </div>
+    <div>
+      <label>Investigation Date</label>
+      <div class="mono" style="margin-bottom:14px;">{{ case.get('investigation_date', 'N/A') }}</div>
+      <label>Description</label>
+      <div class="mono">{{ case.get('description', 'N/A') }}</div>
+    </div>
+  </div>
+</div>
+
+<div class="card" style="margin-top:18px;">
+  <div class="section-title"><span class="accent-bar"></span>Run Demo Investigation</div>
+  <p style="color:var(--text-1); font-size:13px;">
+    Simulate the full investigation pipeline against the synthetic demo evidence dataset.
+  </p>
+  <button id="run-demo-btn" class="btn primary">Run Demo Investigation</button>
+  <div class="progress-bar"><div id="demo-progress-fill" class="progress-fill"></div></div>
+
+  <div id="demo-pipeline" class="pipeline" style="margin-top:18px;">
+    {% set stages = ["Evidence Verification", "File-System Analysis", "Deleted File Detection",
+                      "Recovery Analysis", "Metadata Analysis", "Timeline Reconstruction",
+                      "Evidence Correlation", "Report Generation"] %}
+    {% for stage in stages %}
+    <div class="pipeline-step">
+      <div class="idx">{{ loop.index }}</div>
+      <div class="label">{{ stage }}</div>
+      <div class="status">Pending</div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+
+<div class="grid grid-3" style="margin-top:18px;">
+  <a href="{{ url_for('evidence') }}" class="card" style="text-align:center;">
+    <div class="section-title" style="justify-content:center;">Upload Evidence</div>
+    <div style="font-size:12px; color:var(--text-1);">Add authorized evidence and calculate SHA-256</div>
+  </a>
+  <a href="{{ url_for('deleted_files') }}" class="card" style="text-align:center;">
+    <div class="section-title" style="justify-content:center;">Deleted Files</div>
+    <div style="font-size:12px; color:var(--text-1);">Review and recover detected deleted files</div>
+  </a>
+  <a href="{{ url_for('report') }}" class="card" style="text-align:center;">
+    <div class="section-title" style="justify-content:center;">Generate Report</div>
+    <div style="font-size:12px; color:var(--text-1);">Compile findings into a forensic report</div>
+  </a>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  // Highlight the correct sidebar entry for this page (dashboard uses active_page from server,
+  // this is a no-op safeguard for direct-render paths).
+</script>
+{% endblock %}
